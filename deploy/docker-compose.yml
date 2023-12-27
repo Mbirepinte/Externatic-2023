@@ -1,0 +1,57 @@
+version: "3.5"
+
+# this docker compose file is used for deployment
+
+services:
+  # define database container
+  db:
+    container_name: externatic_${APP_ENV}_db
+    image: mysql:8.1.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: "externatic"
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: "externatic"
+      # You can use whatever password you like
+      MYSQL_PASSWORD: "extewnatic"
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: "password"
+    volumes:
+      - externaticdb:/var/lib/mysql
+    networks:
+      - appinternals
+  # define backend container
+  server:
+    container_name: externatic_${APP_ENV}_server
+    image: ${DOCKER_USER}/externatic-deploy-server:${DOCKER_IMAGE_TAG}
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/externatic?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true"
+      SPRING_DATASOURCE_USERNAME: "externatic"
+      SPRING_DATASOURCE_PASSWORD: "extewnatic"
+    depends_on:
+      - db
+    networks:
+      appinternals:
+        aliases:
+          - server
+
+  # define nginx + front container
+  nginx:
+    container_name: externatic_${APP_ENV}_client
+    image: ${DOCKER_USER}/externatic-deploy-client:${DOCKER_IMAGE_TAG}
+    depends_on:
+      - server
+    restart: always
+    networks:
+      - appinternals
+    ports:
+      - ${GATEWAY_PORT:-8000}:80
+
+volumes:
+  externaticdb:
+    driver: local
+networks:
+  appinternals:
+    # customize the actual network name depending on environment, so "prod" containers do not share network with "preprod" even on same machine / docker server
+    name: appinternals_${APP_ENV}
