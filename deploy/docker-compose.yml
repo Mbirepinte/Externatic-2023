@@ -23,10 +23,6 @@ services:
     container_name: externatic_${APP_ENV}_server
     image: ${DOCKER_USER}/externatic-deploy-server:${DOCKER_IMAGE_TAG}
     restart: always
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/externatic?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true"
-      SPRING_DATASOURCE_USERNAME: "externatic"
-      SPRING_DATASOURCE_PASSWORD: "extewnatic"
     depends_on:
       - db
     networks:
