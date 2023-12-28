@@ -20,7 +20,7 @@ jobs:
 
       # use a specific Dockerfile (deploy/Dockerfile-nginx-front) to build a specific image with a web server (nginx) and compiled front files
       - name: Build FRONT image PROD
-        run: docker build --build-arg NG_ENV=production -f ./deploy/Dockerfile-nginx-front -t ${{ secrets.DOCKERHUB_USERNAME }}/externatic-deploy-server:${GITHUB_REF##*/} .
+        run: docker build --build-arg NG_ENV=production -f ./deploy/Dockerfile-nginx-front -t ${{ secrets.DOCKERHUB_USERNAME }}/externatic-deploy-client:${GITHUB_REF##*/} .
 
       # build backend image with Spring Boot plugin for Maven
      
