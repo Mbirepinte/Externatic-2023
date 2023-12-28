@@ -4,10 +4,10 @@ export DOCKER_USER="$2"
 echo "docker image tag: $DOCKER_IMAGE_TAG pushed by $DOCKER_USER"
 if [ "$DOCKER_IMAGE_TAG" == "main"  ]; then 
   export APP_ENV='prod' 
-  export GATEWAY_PORT=8143 
+  export GATEWAY_PORT=8150 
 else
   export APP_ENV='preprod' 
-  export GATEWAY_PORT=8142 
+  export GATEWAY_PORT=8150 
 fi	
 COMPOSE_FILE=docker-compose.yml
 docker compose pull
