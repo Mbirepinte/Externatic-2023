@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 const port = parseInt(process.env.APP_PORT ?? "5000", 10);
 
-console.log(process.env.FRONTEND_URL);
+console.log(process.env.DB_HOST);
 
 const io = socketIo(server, {
   cors: {
